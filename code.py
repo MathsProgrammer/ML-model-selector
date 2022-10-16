@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from xgboost import XGBClassifier
 from sklearn.metrics import f1_score,precision_score,accuracy_score,recall_score
+from sklearn.preprocessing import StandardScaler
 
 #Read and show data
 
@@ -24,7 +25,7 @@ data = data.drop_duplicates()
 #X,y test/train
 
 X = data.drop('Outcome', axis = 1)
-y = y = data['Outcome']
+y = data['Outcome']
 
 
 #Training data
@@ -44,6 +45,7 @@ dt =DecisionTreeClassifier(max_features=8 , max_depth=6)
 dt.fit(X_train , y_train)
 dt.score(X_test , y_test).round(5)
 DT_preds = dt.predict(X_test)
+
 #Random forest
 
 Rclf = RandomForestClassifier(max_features=8 , max_depth=6)
@@ -58,6 +60,13 @@ xgb.fit(X_train , y_train)
 xgb.score(X_test , y_test).round(5)
 xgb_preds=xgb.predict(X_test)
 
+
+#Need to scale the data for the following methods
+
+scale = StandardScaler()
+X_train, X_test = scale.fit_transform(X_train),scale.fit_transform(X_test)
+    
+    
 #Logistic regression
 
 lr = LogisticRegression(C = 100)
